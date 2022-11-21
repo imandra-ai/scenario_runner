@@ -31,6 +31,7 @@ class NpcVehicleControl(BasicControl):
     """
 
     _args = {'K_P': 1.0, 'K_D': 0.01, 'K_I': 0.0, 'dt': 0.05}
+    _sargs = {'K_P': 0.5, 'K_I': 0.01, 'K_D': 0.01, 'dt': 0.05}
 
     def __init__(self, actor, args=None):
         super(NpcVehicleControl, self).__init__(actor)
@@ -38,7 +39,9 @@ class NpcVehicleControl(BasicControl):
         self._local_planner = LocalPlanner(  # pylint: disable=undefined-variable
             self._actor, opt_dict={
                 'target_speed': self._target_speed * 3.6,
-                'lateral_control_dict': self._args})
+                'lateral_control_dict': self._args,
+                'longitudinal_control_dict': self._sargs,
+            })
 
         if self._waypoints:
             self._update_plan()
