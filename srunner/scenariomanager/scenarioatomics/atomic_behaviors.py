@@ -640,13 +640,6 @@ class ChangeActorSpeedTransition(AtomicBehavior):
         # for override behavior compatibility with ChangeActorTargetSpeed
         actor_dict[self._actor.id].update_target_speed(self._init_speed, start_time=self._start_time)
 
-        print("Created accelerate action")
-        print(" - actor = ", self._actor.id)
-        print(" - start_time = ", self._start_time)
-        print(" - duration = ", self._duration)
-        print(" - target speed = ", self._target_speed)
-        print(" - init speed", self._init_speed)
-
         super(ChangeActorSpeedTransition, self).initialise()
 
     def update(self):
@@ -669,7 +662,6 @@ class ChangeActorSpeedTransition(AtomicBehavior):
 
         # Another speed action fired - overriding
         if actor_dict[self._actor.id].get_last_longitudinal_command() != self._start_time:
-            print("Action overriden!")
             return py_trees.common.Status.SUCCESS
 
         # Step and duration = 0 behaviors instantly change the speed and SUCCEED
@@ -684,7 +676,6 @@ class ChangeActorSpeedTransition(AtomicBehavior):
         v = CarlaDataProvider.get_velocity(self._actor)
         if tau >= 1.0:
             tau = 1.0
-            print("Action finished! v = ", v)
             new_status = py_trees.common.Status.SUCCESS
 
         speed = self._init_speed
@@ -699,7 +690,6 @@ class ChangeActorSpeedTransition(AtomicBehavior):
             speed = self._target_speed
             new_status = py_trees.common.Status.SUCCESS
 
-        print("Set speed", self._actor.id, speed, "current", v)
         actor_dict[self._actor.id].update_target_speed(speed)
         return new_status
 
